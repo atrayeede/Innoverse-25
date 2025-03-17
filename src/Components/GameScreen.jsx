@@ -9,6 +9,10 @@ import "./GameScreen.css";
 function GameScreen({ onRiddleCollected, onElimination, riddlesCollected }) {
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState(0)
+  const [hasWrongAnswer, setHasWrongAnswer] = useState(false)
+  const [gameCompleted, setGameCompleted] = useState(false)
+  const [timerStarted, setTimerStarted] = useState(false)
   const [treeData, setTreeData] = useState({
     id: "root",
     name: "Start",
@@ -25,51 +29,122 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected }) {
     setQuestions([...questionsData].sort(() => Math.random() - 0.5));
   }, []);
 
-  const handleAnswerSelected = (selectedOptionIndex, isCorrect) => {
-    setSelectedPath((prevPath) => {
-      const newNodeId = `${selectedOptionIndex + 1}-${prevPath.length}`;
-      const updatedPath = [...prevPath, newNodeId];
-
-      setTreeData((prevTree) => {
-        const updatedTree = JSON.parse(JSON.stringify(prevTree)); // Deep copy of tree
-
-        // Helper function to find a node
-        const findNode = (node, id) => {
-          if (node.id === id) return node;
-          if (!node.children) return null;
-          for (let child of node.children) {
-            const found = findNode(child, id);
-            if (found) return found;
-          }
-          return null;
-        };
-
-        // Find the correct parent node corresponding to the option
-        const parentNode = findNode(updatedTree, `${selectedOptionIndex + 1}`);
-
-        if (parentNode) {
-          // Generate 4 new child nodes for the selected option
-          const newChildren = Array.from({ length: 4 }, (_, i) => ({
-            id: `${selectedOptionIndex + 1}-${prevPath.length}-${i + 1}`,
-            name: `Step ${prevPath.length + 1} - Option ${i + 1}`,
-            isChest: isCorrect && i === selectedOptionIndex, // Mark only the selected option as correct
-            isFull: isCorrect && riddlesCollected >= 10, // Show full chest if riddles collected is 10
-            children: [],
-          }));
-
-          parentNode.children = newChildren;
-        }
-
-        return updatedTree;
-      });
-
-      return updatedPath; 
-    });
-
-    if (isCorrect) {
-      const riddleText = questions[currentQuestionIndex].riddle;
-      onRiddleCollected(riddleText);
+  const handleAnswerSelected = (optionIndex) => {
+    if (!timerStarted) {
+      setTimerStarted(true)
     }
+
+    const currentQuestion = questions[currentQuestionIndex]
+    const isCorrect = optionIndex === currentQuestion.correctIndex
+
+    // Update correct answers count
+    if (isCorrect) {
+      setCorrectAnswers((prev) => prev + 1)
+    } else {
+      setHasWrongAnswer(true)
+    }
+
+    // Find the current node in the tree based on the selected path
+    let currentNode = treeData
+    const pathToUpdate = [...selectedPath]
+
+    // Navigate to the current node in the tree
+    for (let i = 1; i < pathToUpdate.length; i++) {
+      const childId = pathToUpdate[i]
+      const childIndex = currentNode.children.findIndex((child) => child.id === childId)
+      if (childIndex !== -1) {
+        currentNode = currentNode.children[childIndex]
+      }
+    }
+
+    // Find the child node that corresponds to the selected option
+    const selectedChild = currentNode.children[optionIndex]
+    if (!selectedChild) return
+
+    // Update the selected path
+    const newPath = [...pathToUpdate, selectedChild.id]
+    setSelectedPath(newPath)
+
+    // Check if this is the final question
+    const isFinalQuestion = currentQuestionIndex === 9
+
+    // Add four new child nodes to the selected child if it doesn't have any and not the final question
+    if (selectedChild.children.length === 0) {
+      let newChildren = []
+
+      if (isFinalQuestion) {
+        // For the final node, add a treasure chest node
+        newChildren = [
+          {
+            id: `${selectedChild.id}-treasure`,
+            name: hasWrongAnswer || !isCorrect ? "Empty Chest" : "Gold Chest",
+            isChest: true,
+            isFull: !hasWrongAnswer && isCorrect,
+            imagePath: hasWrongAnswer || !isCorrect ? "/empty-chest.png" : "/gold-chest.png",
+            children: [],
+          },
+        ]
+      } else {
+        // Regular nodes
+        newChildren = [
+          { id: `${selectedChild.id}-0`, name: "A", children: [] },
+          { id: `${selectedChild.id}-1`, name: "B", children: [] },
+          { id: `${selectedChild.id}-2`, name: "C", children: [] },
+          { id: `${selectedChild.id}-3`, name: "D", children: [] },
+        ]
+      }
+
+      // Create a deep copy of the tree and update it
+      const newTreeData = JSON.parse(JSON.stringify(treeData))
+      let nodeToUpdate = newTreeData
+
+      // Navigate to the node to update
+      for (let i = 1; i < pathToUpdate.length; i++) {
+        const childId = pathToUpdate[i]
+        const childIndex = nodeToUpdate.children.findIndex((child) => child.id === childId)
+        if (childIndex !== -1) {
+          nodeToUpdate = nodeToUpdate.children[childIndex]
+        }
+      }
+
+      // Find the child node that corresponds to the selected option
+      const childIndex = nodeToUpdate.children.findIndex((child) => child.id === selectedChild.id)
+      if (childIndex !== -1) {
+        nodeToUpdate.children[childIndex].children = newChildren
+      }
+
+      setTreeData(newTreeData)
+    }
+
+    // Move to the next question or end the game
+    if (isFinalQuestion) {
+      setGameCompleted(true)
+    } else {
+      setCurrentQuestionIndex((prev) => prev + 1)
+    }
+  }
+
+  const resetGame = () => {
+    setQuestions(questionsData())
+    setCurrentQuestionIndex(0)
+    setCorrectAnswers(0)
+    setHasWrongAnswer(false)
+    setGameCompleted(false)
+    setTreeData({
+      id: "root",
+      name: "Start",
+      children: [
+        { id: "0", name: "A", children: [] },
+        { id: "1", name: "B", children: [] },
+        { id: "2", name: "C", children: [] },
+        { id: "3", name: "D", children: [] },
+      ],
+    })
+    setSelectedPath(["root"])
+    setTimerStarted(false)
+  
+
+  
 
     // Move to next question
     setCurrentQuestionIndex((prevIndex) => {
