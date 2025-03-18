@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import QuestionPanel from "./QuestionPanel";
 import TreeVisualization from "./TreeVisualization";
 import { questionsData } from "./questions";
+import Leaderboard from "./LeaderBoard";
 import "./GameScreen.css";
 
 function GameScreen({ onRiddleCollected, onElimination, riddlesCollected }) {
@@ -155,6 +156,38 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected }) {
       return nextIndex;
     });
   };
+
+  const [updateTrigger, setUpdateTrigger] = useState(0);
+  const [playerData, setPlayerData] = useState({
+    name: "",
+    time: 0,
+    questions: [],
+  });
+
+  const submitScore = async () => {
+    if (playerData.questions.length !== 10) {
+      alert("You must answer 10 questions to submit!");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/leaderboard/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(playerData),
+      });
+
+      if (response.ok) {
+        setUpdateTrigger((prev) => prev + 1); // Update leaderboard
+        alert("Score submitted successfully!");
+      } else {
+        alert("Error submitting score.");
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+    }
+  };
+
 
   return (
     <div className="game-screen">

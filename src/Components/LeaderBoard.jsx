@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import "./Leaderboard.css"; // Import the CSS file
+import { Link } from "react-router-dom";
+import "./LeaderBoard.css"; 
 
 const Leaderboard = () => {
   const [players, setPlayers] = useState([]);
@@ -9,10 +10,9 @@ const Leaderboard = () => {
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/leaderboard/"); // Update with your API URL
+        const response = await fetch("http://127.0.0.1:8000/api/leaderboard/");
         if (response.ok) {
           const data = await response.json();
-          // Sort players by minimum time required (ascending order)
           setPlayers(data.sort((a, b) => a.time - b.time));
         }
       } catch (error) {
@@ -21,10 +21,7 @@ const Leaderboard = () => {
     };
 
     fetchLeaderboard();
-    const interval = setInterval(fetchLeaderboard, 5000); // Auto-refresh every 5 seconds
-
-    return () => clearInterval(interval);
-  }, []);
+  }, []); 
 
   return (
     <div className="leaderboard-container">
@@ -35,6 +32,7 @@ const Leaderboard = () => {
             <th>Rank</th>
             <th>Name</th>
             <th>Time (seconds)</th>
+            <th>Questions & Answers</th>
           </tr>
         </thead>
         <tbody>
@@ -43,10 +41,21 @@ const Leaderboard = () => {
               <td>{index + 1}</td>
               <td>{player.name}</td>
               <td>{player.time.toFixed(2)}s</td>
+              <td>
+                <ul>
+                  {player.questions.map((q, i) => (
+                    <li key={i}>
+                      <strong>Q:</strong> {q.question} <br />
+                      <strong>A:</strong> {q.answer}
+                    </li>
+                  ))}
+                </ul>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <Link to="/" className="back-link">Back to Game</Link>
     </div>
   );
 };

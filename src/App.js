@@ -4,6 +4,7 @@ import { useState } from "react"
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
 import GameScreen from "./Components/GameScreen"
 import Map from "./Components/Map"
+import Leaderboard from "./Components/LeaderBoard";
 import EliminationPage from "./Components/EliminationPage"
 import "./App.css"
 
@@ -46,6 +47,7 @@ function App() {
           />
           <Route path="/map" element={isGameCompleted ? <Map riddles={riddles} /> : <Navigate to="/" />} />
           <Route path="/eliminated" element={isEliminated ? <EliminationPage /> : <Navigate to="/" />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
         </Routes>
       </div>
     </Router>
