@@ -49,28 +49,29 @@
   .option-text {
     font-size: 18px;
   }
+
   
-  .option.correct {
-    background-color: #d4edda;
+  .option.select {
+    background-color: #0374ed;
     border-color: #c3e6cb;
-    animation: pulse-green 1s;
+    animation: pulse-blue 1s;
   }
   
-  .option.incorrect {
+  /* .option.incorrect {
     background-color: #f8d7da;
     border-color: #f5c6cb;
     animation: pulse-red 1s;
-  }
+  } */
   
-  @keyframes pulse-green {
+  @keyframes pulse-blue {
     0% {
-      box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+      box-shadow: 0 0 0 0 #479df9;
     }
     70% {
-      box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
+      box-shadow: 0 0 0 10px #87baf1;
     }
     100% {
-      box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+      box-shadow: 0 0 0 0 #96c9ff;
     }
   }
   

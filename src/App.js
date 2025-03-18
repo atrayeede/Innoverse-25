@@ -3,8 +3,7 @@
 import { useState } from "react"
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
 import GameScreen from "./Components/GameScreen"
-import Map from "./Components/Map"
-import EliminationPage from "./Components/EliminationPage"
+import Riddles from "./Components/Riddles"
 import "./App.css"
 
 function App() {
@@ -44,8 +43,8 @@ function App() {
               )
             }
           />
-          <Route path="/map" element={isGameCompleted ? <Map riddles={riddles} /> : <Navigate to="/" />} />
-          <Route path="/eliminated" element={isEliminated ? <EliminationPage /> : <Navigate to="/" />} />
+          <Route path="/riddles" element={<Riddles/>} />
+
         </Routes>
       </div>
     </Router>
