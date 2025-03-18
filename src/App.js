@@ -1,29 +1,22 @@
-
-
-import { useState } from "react"
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
-import GameScreen from "./Components/GameScreen"
-import Map from "./Components/Map"
+import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import GameScreen from "./Components/GameScreen";
 import Leaderboard from "./Components/LeaderBoard";
-import EliminationPage from "./Components/EliminationPage"
-import "./App.css"
+import EliminationPage from "./Components/EliminationPage";
+import Riddles from "./Components/Riddles";
+import "./App.css";
 
 function App() {
-  const [riddles, setRiddles] = useState([])
-  const [isGameCompleted, setIsGameCompleted] = useState(false)
-  const [isEliminated, setIsEliminated] = useState(false)
+  const [riddles, setRiddles] = useState([]);
+  const [isGameCompleted, setIsGameCompleted] = useState(false);
+  const [isEliminated, setIsEliminated] = useState(false);
 
   const handleRiddleCollected = (riddle) => {
-    setRiddles((prevRiddles) => [...prevRiddles, riddle])
-
+    setRiddles((prev) => [...prev, riddle]);
     if (riddles.length + 1 >= 10) {
-      setIsGameCompleted(true)
+      setIsGameCompleted(true);
     }
-  }
-
-  const handleElimination = () => {
-    setIsEliminated(true)
-  }
+  };
 
   return (
     <Router>
@@ -37,22 +30,17 @@ function App() {
               ) : isGameCompleted ? (
                 <Navigate to="/map" />
               ) : (
-                <GameScreen
-                  onRiddleCollected={handleRiddleCollected}
-                  onElimination={handleElimination}
-                  riddlesCollected={riddles.length}
-                />
+                <GameScreen onRiddleCollected={handleRiddleCollected} riddlesCollected={riddles.length} />
               )
             }
           />
-          <Route path="/map" element={isGameCompleted ? <Map riddles={riddles} /> : <Navigate to="/" />} />
-          <Route path="/eliminated" element={isEliminated ? <EliminationPage /> : <Navigate to="/" />} />
+          <Route path="/eliminated" element={<EliminationPage />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/riddles" element={<Riddles />} />
         </Routes>
       </div>
     </Router>
-  )
+  );
 }
 
-export default App
-
+export default App;

@@ -28,7 +28,7 @@ function QuestionPanel({ question, onAnswerSelected }) {
       return "option"
     }
 
-    return index === question.correctAnswer ? "option correct" : "option incorrect"
+    return index === question.correctAnswer ? "option select" : "option select"
   }
 
   return (
