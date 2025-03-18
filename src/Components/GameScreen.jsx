@@ -67,7 +67,9 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected }) {
     if (isCorrect) {
       setCorrectAnswers((prev) => {
         const updatedCorrectAnswers = prev + 1;
-        console.log(`Correct answer! Total correct answers: ${updatedCorrectAnswers}`); // Debug log
+        console.log(
+          `Correct answer! Total correct answers: ${updatedCorrectAnswers}`
+        ); // Debug log
         // Check if the player has reached 10 correct answers
         if (updatedCorrectAnswers === 10) {
           setTimeout(() => {
@@ -87,7 +89,9 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected }) {
 
     for (let i = 1; i < pathToUpdate.length; i++) {
       const childId = pathToUpdate[i];
-      const childIndex = currentNode.children.findIndex((child) => child.id === childId);
+      const childIndex = currentNode.children.findIndex(
+        (child) => child.id === childId
+      );
       if (childIndex !== -1) {
         currentNode = currentNode.children[childIndex];
       }
@@ -174,12 +178,19 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected }) {
           <span>Correct Answers: {correctAnswers}/10</span>
         </div>
       </div>
-      <Timer gameOver={gameCompleted} startTime={startTime} onTimeUpdate={handleTimeUpdate} />
+      <Timer
+        gameOver={gameCompleted}
+        startTime={startTime}
+        onTimeUpdate={handleTimeUpdate}
+      />
 
       <div className="game-content">
         <div className="question-panel-container">
           {questions.length > 0 && !gameCompleted && (
-            <QuestionPanel question={questions[currentQuestionIndex]} onAnswerSelected={handleAnswerSelected} />
+            <QuestionPanel
+              question={questions[currentQuestionIndex]}
+              onAnswerSelected={handleAnswerSelected}
+            />
           )}
           {gameCompleted && (
             <div className="game-result">
