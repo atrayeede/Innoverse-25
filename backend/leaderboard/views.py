@@ -12,10 +12,10 @@ def leaderboard_list(request):
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        if "questions" in request.data and len(request.data["questions"]) == 10:
+        if "questions" in request.data and isinstance(request.data["questions"], list) and len(request.data["questions"]) == 10:
             serializer = LeaderboardSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        return Response({"error": "Must submit 10 questions"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": "Must submit exactly 10 questions in a list"}, status=status.HTTP_400_BAD_REQUEST)
