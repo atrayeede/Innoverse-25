@@ -23,7 +23,10 @@ function App() {
   const [riddles, setRiddles] = useState([]);
   const [isGameCompleted, setIsGameCompleted] = useState(false);
   const [isEliminated, setIsEliminated] = useState(false);
-  const [isDone, setIsDone] = useState(false);
+  const [isDone, setIsDone] = useState(
+    localStorage.getItem("isDone") === "true" || false
+  );
+
   const [isLogin, setIsLogin] = useState(false)
 
   const handleRiddleCollected = (riddle) => {
@@ -65,19 +68,28 @@ function App() {
             <Route
               path="/crossword"
               element={
-                <MainLayout>
-                  <Background />
-                  <Crossword />
-                </MainLayout>
+                isDone ? (
+                  <MainLayout>
+                    <Background />
+                    <Crossword />
+                  </MainLayout>
+                ) : (
+                  <Navigate to="/alter" />
+                )
+                
               }
             />
             <Route
               path="/winner"
               element={
-                <MainLayout>
-                  <Background />
-                  <WinnerPage/>
-                </MainLayout>
+                isDone ? (
+                  <MainLayout>
+                    <Background />
+                    <WinnerPage />
+                  </MainLayout>
+                ) : (
+                  <Navigate to="/alter" />
+                )
               }
             />
             <Route
@@ -91,7 +103,7 @@ function App() {
             <Route
               path="/riddles"
               element={
-                isDone || 1 ? (
+                isDone  ? (
                   <MainLayout>
                     <Background />
                     <Riddles />
@@ -110,6 +122,9 @@ function App() {
               }
             />
           </Routes>
+
+          
+          
         </div>
       </Router>
     </GoogleOAuthProvider>

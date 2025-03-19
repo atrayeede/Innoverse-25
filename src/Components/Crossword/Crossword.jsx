@@ -299,7 +299,7 @@ export default function Crossword() {
         <div className="popup-overlay">
           <div className="popup">
             <h2>{isCorrect ? "Congratulations!" : "Try Again!"}</h2>
-            <p>
+            <p className="text-black">
               {isCorrect ? (
                 <>
                   All your answers are correct! <br />

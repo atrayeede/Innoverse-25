@@ -24,9 +24,31 @@ const Intro = () => {
 
         // Save email and name to localStorage
         localStorage.setItem("name", userInfo.name);
-
+        const player_name= userInfo.name;
+        const checkResponse = await fetch("http://127.0.0.1:8000/api/player/");
+        if (!checkResponse.ok) throw new Error("Error fetching player data");
+  
+        const players = await checkResponse.json();
+        const playerExists = players.some(player => player.name === player_name);
         setIsGoogleAuth(true);
+        
+        if (!playerExists) {
+          // If the player does not exist, add them
+          await fetch("http://127.0.0.1:8000/api/player/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: player_name,
+              is_complete: false,
+            }),
+          });
+          console.log("New player added!");
+        } else {
+          console.log("Player already exists, skipping creation.");
+        }
+  
         navigate("/adventure");
+  
       } catch (error) {
         console.error("Error during login:", error);
       }
@@ -34,6 +56,7 @@ const Intro = () => {
     onError: () => {
       console.log("Google Login Failed");
     },
+    
   });
 
   return (

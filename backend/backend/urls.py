@@ -1,7 +1,7 @@
 """
 URL configuration for backend project.
 
-The `urlpatterns` list routes URLs to views. For more information please see:
+The urlpatterns list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
 Examples:
 Function views
@@ -22,9 +22,6 @@ def home(request):
     return JsonResponse({"message": "Go to /api/leaderboard/ to see the leaderboard."})
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("api/leaderboard/", include("leaderboard.urls")),  # Keep this
-    path("", home),  # Redirect root URL to a JSON response
+    path("admin/", admin.site.urls),  # Keep this
+    path("", include("leaderboard.urls")),  # Redirect root URL to a JSON response
 ]
-
-

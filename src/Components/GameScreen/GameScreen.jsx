@@ -4,13 +4,14 @@ import TreeVisualization from "../TreeVisualization/TreeVisualization";
 import { questionsData } from "../questions";
 import "./GameScreen.css";
 import Timer from "../Timer/Timer";
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import Navbar from "../Navbar/Navbar";
 import { useNavigate } from "react-router-dom";
 
 function GameScreen({ onRiddleCollected, onElimination, riddlesCollected, setIsDone }) {
   const [questions, setQuestions] = useState([]);
   const [score, setScore] = useState(Number(localStorage.getItem("user_score")) || 0);
-  const name = localStorage.getItem("name");
+  const player_name = localStorage.getItem("name");
   const navigate = useNavigate();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [gameCompleted, setGameCompleted] = useState(false);
@@ -38,6 +39,48 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected, setIsD
     localStorage.setItem("user_score", score);
     localStorage.setItem("start_time", startTime);
   }, [score, startTime]);
+  useEffect(() => {
+    const fetchPlayerStatus = async () => {
+      try {
+        const player_name = localStorage.getItem("name"); // Retrieve player name from localStorage
+  
+        if (!player_name) {
+          console.error("No player name found in localStorage");
+          return;
+        }
+  
+        const response = await fetch("http://127.0.0.1:8000/api/player/");
+        if (!response.ok) {
+          throw new Error("Failed to fetch player status");
+        }
+        const data = await response.json(); // Parse JSON response
+        // Find the player in the response data
+        const player = data.find((p) => p.name === player_name);
+        if (player) {
+          if (player.is_complete) {
+            localStorage.setItem("isDone", "true"); // Navigate to riddles if is_complete is true
+          } else {
+            localStorage.setItem("isDone", "false"); // Navigate to alter if is_complete is false
+          }
+        } else {
+          console.error("Player not found in the database");
+        }
+      } catch (error) {
+        console.error("Error fetching player status:", error);
+      }
+    };
+  
+    fetchPlayerStatus();
+  }, [navigate]);
+  useEffect(() => {
+    console.log(score);
+    const isDone = localStorage.getItem("isDone")
+    console.log(isDone==="true");
+    if (isDone==="true") {
+      setIsDone(true);
+    }
+  });
+  
 
   const handleAnswerSelected = async (optionIndex) => {
     if (questions.length === 0) return; // Prevent errors if questions haven't loaded
@@ -97,13 +140,55 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected, setIsD
       setScore(prevScore => {
         const newScore = prevScore + 1;
 
-        if (newScore === 10) {
-          setIsDone(true);
-          navigate("/riddles");
+        if (newScore >= 10) {
           alert("You have collected all the keys. Now you can proceed to the next round.");
+          fetch("http://127.0.0.1:8000/api/player/")
+        .then((response) => response.json())
+        .then((players) => {
+          const player = players.find((p) => p.name === player_name);
+
+          if (player) {
+            // Delete the existing player record
+            fetch(`http://127.0.0.1:8000/api/player/${player.id}/`, 
+            {
+              method: "DELETE",
+              headers: { "Content-Type": "application/json" },
+            }
+          )
+              .then((res) => {
+                if (!res.ok) throw new Error("Failed to delete previous player entry");
+                console.log("Previous player entry deleted successfully.");
+
+                // Re-add player with is_complete = true
+                return fetch("http://127.0.0.1:8000/api/player/", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ name: player_name, is_complete: true }),
+                });
+              })
+              .then((res) => {
+                if (!res.ok) throw new Error("Failed to re-add player with completion status");
+                console.log("Player completion status updated successfully!");
+              })
+              .catch((error) => console.error("Error updating player status:", error));
+          } else {
+            // If player doesn't exist, add directly
+            fetch("http://127.0.0.1:8000/api/player/", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ name: player_name, is_complete: true }),
+            })
+              .then((res) => {
+                if (!res.ok) throw new Error("Failed to add player");
+                console.log("Player added successfully!");
+              })
+              .catch((error) => console.error("Error adding player:", error));
+          }
+        })
+        .catch((error) => console.error("Error fetching player data:", error));
 
           const playerData = {
-            name: name,
+            name: player_name,
             time: Date.now() - startTime,
           };
 
@@ -117,12 +202,13 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected, setIsD
               console.log("Score submitted successfully!");
             })
             .catch((error) => console.error("Submission error:", error));
+          navigate("/riddles");
         }
 
         return newScore;
       });
     } else {
-      alert("Wrong answer! Try again.");
+      setScore(score);
     }
 
     if (isFinalQuestion) {
@@ -138,13 +224,16 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected, setIsD
   };
 
   return (
-    <div className="game-screen mt-[70px] ">
-      <div className="game-header ">
-        <h2 className="Round-1h1"> Round-1</h2>
+    <div className="game-screen mt-[70px]">
+      <Navbar />
+
+      <div className="game-header">
+        <h1 className="Round-1h1">Round-1</h1>
         <div className="progress-indicator">
           <span>
             Questions: {currentQuestionIndex + 1}/{questions.length}
           </span>
+          
         </div>
       </div>
       <Timer
@@ -153,7 +242,7 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected, setIsD
         onTimeUpdate={handleTimeUpdate}
       />
       <div className="game-content">
-        <div className="question-panel-container">
+        <div className="question-panel-container text-black">
           {questions.length > 0 && (
             <QuestionPanel
               question={
