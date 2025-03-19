@@ -25,37 +25,31 @@ const Leaderboard = () => {
 
   return (
     <div className="leaderboard-container">
-      <h1>Leaderboard</h1>
-      <table className="leaderboard-table">
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Name</th>
-            <th>Time (seconds)</th>
-            <th>Questions & Answers</th>
-          </tr>
-        </thead>
-        <tbody>
-          {players.map((player, index) => (
-            <tr key={player.id}>
-              <td>{index + 1}</td>
-              <td>{player.name}</td>
-              <td>{player.time.toFixed(2)}s</td>
-              <td>
-                <ul>
-                  {player.questions.map((q, i) => (
-                    <li key={i}>
-                      <strong>Q:</strong> {q.question} <br />
-                      <strong>A:</strong> {q.answer}
-                    </li>
-                  ))}
-                </ul>
-              </td>
+      <h1 className="text-5xl">Leaderboard</h1>
+      <div style={{ overflowX: "auto" }}>
+        <table className="leaderboard-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Name</th>
+              <th>Time (seconds)</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <Link to="/" className="back-link">Back to Game</Link>
+          </thead>
+          <tbody>
+            {players.map((player, index) => (
+              <tr key={player.id}>
+                <td>{index + 1}</td>
+                <td>{player.name}</td>
+                <td>{player.time.toFixed(2)}s</td>
+                <td>
+                 
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {/* <Link to="/" className="back-link">Back to Game</Link> */}
     </div>
   );
 };
