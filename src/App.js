@@ -4,6 +4,7 @@ import GameScreen from "./Components/GameScreen";
 import Leaderboard from "./Components/LeaderBoard";
 import EliminationPage from "./Components/EliminationPage";
 import Riddles from "./Components/Riddles";
+import Crossword from "./Components/Crossword";
 import "./App.css";
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
           <Route path="/eliminated" element={<EliminationPage />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/riddles" element={<Riddles />} />
+          <Route path="/crossword" element={<Crossword/>} />
         </Routes>
       </div>
     </Router>

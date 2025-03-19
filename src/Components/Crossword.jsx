@@ -1,7 +1,5 @@
-"use client";
-
 import { useState, useEffect } from "react";
-import "./App.css";
+import "./Crossword.css";
 
 export default function Crossword() {
   // Update the crosswordData object with a larger grid containing 10 words
