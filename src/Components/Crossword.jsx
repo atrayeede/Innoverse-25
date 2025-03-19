@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import "./App.css";
+import Swal from "sweetalert2";
 
 export default function Crossword() {
   // Update the crosswordData object with a larger grid containing 10 words
@@ -12,11 +13,11 @@ export default function Crossword() {
       ["", "", "", "", "V", "", "", "", "", "", ""],
       ["", "", "N", "O", "A", "P", "I", "", "", "", ""],
       ["", "", "O", "", "S", "", "", "", "", "", ""],
-      ["", "F", "D", "", "C", "O", "D", "E", "", "", ""],
-      ["", "U", "E", "", "R", "", "", "", "", "", ""],
-      ["H", "N", "", "", "I", "", "", "", "", "", ""],
-      ["T", "C", "S", "S", "P", "", "", "", "", "", ""],
-      ["M", "T", "", "", "T", "", "", "", "", "", ""],
+      ["", "A", "D", "", "C", "O", "D", "E", "", "", ""],
+      ["", "L", "E", "", "R", "", "", "", "", "", ""],
+      ["H", "U", "", "", "I", "", "", "", "", "", ""],
+      ["T", "M", "P", "O", "P", "", "", "", "", "", ""],
+      ["M", "N", "", "", "T", "", "", "", "", "", ""],
       ["L", "I", "B", "R", "A", "R", "Y", "", "", "", ""],
     ],
     // Solution grid for checking answers
@@ -26,11 +27,11 @@ export default function Crossword() {
       ["", "", "", "", "V", "", "", "", "", "", ""],
       ["", "", "N", "O", "A", "P", "I", "", "", "", ""],
       ["", "", "O", "", "S", "", "", "", "", "", ""],
-      ["", "F", "D", "", "C", "O", "D", "E", "", "", ""],
-      ["", "U", "E", "", "R", "", "", "", "", "", ""],
-      ["H", "N", "", "", "I", "", "", "", "", "", ""],
-      ["T", "C", "S", "S", "P", "", "", "", "", "", ""],
-      ["M", "T", "", "", "T", "", "", "", "", "", ""],
+      ["", "A", "D", "", "C", "O", "D", "E", "", "", ""],
+      ["", "L", "E", "", "R", "", "", "", "", "", ""],
+      ["H", "U", "", "", "I", "", "", "", "", "", ""],
+      ["T", "M", "P", "O", "P", "", "", "", "", "", ""],
+      ["M", "N", "", "", "T", "", "", "", "", "", ""],
       ["L", "I", "B", "R", "A", "R", "Y", "", "", "", ""],
     ],
     // Add clues for the words (not displayed in this version)
@@ -66,13 +67,13 @@ export default function Crossword() {
       },
       {
         id: 6,
-        word: "FUNCTION",
+        word: "ALUMNI",
         direction: "vertical",
         startRow: 5,
         startCol: 1,
       },
       { id: 7, word: "HTML", direction: "vertical", startRow: 7, startCol: 0 },
-      { id: 8, word: "CSS", direction: "horizontal", startRow: 8, startCol: 2 },
+      { id: 8, word: "POP", direction: "horizontal", startRow: 8, startCol: 2 },
       {
         id: 9,
         word: "SCRIPT",
@@ -295,9 +296,14 @@ export default function Crossword() {
           <div className="popup">
             <h2>{isCorrect ? "Congratulations!" : "Try Again!"}</h2>
             <p>
-              {isCorrect
-                ? "All your answers are correct!"
-                : "Some of your answers are incorrect. Please try again."}
+              {isCorrect ? (
+                <>
+                  All your answers are correct! <br />
+                  CODE:HAILSAE
+                </>
+              ) : (
+                "Some of your answers are incorrect. Please try again."
+              )}
             </p>
             <button onClick={closePopup}>Close</button>
           </div>
