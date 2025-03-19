@@ -24,7 +24,7 @@ const Leaderboard = () => {
   }, []); 
 
   return (
-    <div className="leaderboard-container">
+    <div className="leaderboard-container mt-10">
       <h1 className="text-5xl">Leaderboard</h1>
       <div style={{ overflowX: "auto" }}>
         <table className="leaderboard-table">

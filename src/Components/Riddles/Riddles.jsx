@@ -25,32 +25,27 @@ const riddles = [
 
 const Riddles = () => {
   return (
-    <div className="p-4 bg-yellow-800">
-      <div className="riddle-container">
-        <div className="header text-center bg-red-950 text-white py-4 rounded-xl">
-          <h1 className=" text-2xl lg:text-3xl font-extrabold">
-            Your Hints to Reach the Treasure's Keys
-          </h1>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 bg-yellow-800">
-          {riddles.map((riddle, index) => (
-            <div
-              key={index}
-              className="riddle-card relative  rounded-xl overflow-hidden "
-            >
-              <img
-                src="../../../Riddlepng.png"
-                alt="Riddle"
-                className="w-full  object-center"
-              />
-              <div className="question absolute top-1/3  left-0 w-full h-full text-center text-black p-2">
-                <p className="text-xl sm:text-2xl  font-bold" >
-                  {riddle.question}
-                </p>
-              </div>
+    <div className="p-4 bg-black mt-16 ">
+      <div className=" relative text-center bg-red-950 text-white py-4 rounded-xl bg-opacity-50">  
+        <h1 className=" text-2xl lg:text-3xl font-extrabold">
+          Your Hints to Reach the Treasure's Keys
+        </h1>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 bg-black">
+        {riddles.map((riddle, index) => (
+          <div key={index} className=" relative  rounded-xl overflow-hidden ">
+            <img
+              src="../../../Riddlepng.png"
+              alt="Riddle"
+              className="w-full  object-center"
+            />
+            <div className=" absolute top-1/3  left-0 w-full h-full text-center text-black p-2">
+              <p className="text-xl sm:text-2xl text-black font-bold">
+                {riddle.question}
+              </p>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   );

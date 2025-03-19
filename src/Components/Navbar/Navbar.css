@@ -1,11 +1,11 @@
 /* Reset and Basic Styles */
-body {
+/* body {
   background-color: #121212;
   font-family: 'Poppins', sans-serif;
   margin: 0;
   padding: 0;
   color: white;
-}
+} */
 
 .navbar {
   display: flex;
@@ -20,6 +20,7 @@ body {
   top: 0;
   left: 0;
   z-index: 1000;
+  overflow: hidden;
 }
 
 /* Logo */

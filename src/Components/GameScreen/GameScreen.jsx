@@ -138,20 +138,27 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected, setIsD
   };
 
   return (
-    <div className="game-screen">
-      
-      <div className="game-header">
-        <h1><span style={{ color: "red" }}>TreeVerse</span> Round-1</h1>
+    <div className="game-screen mt-[70px] ">
+      <div className="game-header ">
+        <h2 className="Round-1h1"> Round-1</h2>
         <div className="progress-indicator">
-          <span>Questions: {currentQuestionIndex + 1}/{questions.length}</span>
+          <span>
+            Questions: {currentQuestionIndex + 1}/{questions.length}
+          </span>
         </div>
       </div>
-      <Timer gameOver={gameCompleted} startTime={startTime} onTimeUpdate={handleTimeUpdate} />
+      <Timer
+        gameOver={gameCompleted}
+        startTime={startTime}
+        onTimeUpdate={handleTimeUpdate}
+      />
       <div className="game-content">
         <div className="question-panel-container">
           {questions.length > 0 && (
             <QuestionPanel
-              question={questions[currentQuestionIndex] || { text: "", options: [] }}
+              question={
+                questions[currentQuestionIndex] || { text: "", options: [] }
+              }
               onAnswerSelected={handleAnswerSelected}
             />
           )}

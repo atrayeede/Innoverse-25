@@ -1,6 +1,6 @@
 .leaderboard-container {
   text-align: center;
-  max-width: 1500px;
+  
   background: url('https://png.pngtree.com/thumb_back/fh260/background/20210207/pngtree-black-background-light-simple-image_556933.jpg') no-repeat center center;
   background-size: cover; 
   overflow: hidden;
@@ -9,6 +9,8 @@
   width: 100vw; 
   padding: 20px;
   box-sizing: border-box;
+  overflow: hidden;
+  
 }
 
   

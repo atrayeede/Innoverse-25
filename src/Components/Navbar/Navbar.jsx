@@ -31,18 +31,30 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="logo">TreeVerse</div>
-      
-      <ul className={isOpen ? 'nav-links open' : 'nav-links'}>
-        <div>
-        </div>
-        <li><a href="/riddles">Hints</a></li>
-        <li><a href="/leaderboard">LeaderBoard</a></li>
+
+      <ul className={isOpen ? "nav-links open" : "nav-links"}>
+        <div></div>
+        <li>
+          <a href="/">Home</a>
+        </li>
+        <li>
+          <a href="/Rules">Rules</a>
+        </li>
+        <li>
+          <a href="/riddles">Hints</a>
+        </li>
+        <li>
+          <a href="/crossword">CrossWord</a>
+        </li>
+        <li>
+          <a href="/leaderboard">LeaderBoard</a>
+        </li>
       </ul>
 
       <div className="hamburger" onClick={toggleMenu}>
-        <div className={isOpen ? 'line rotate-top' : 'line'}></div>
-        <div className={isOpen ? 'line hide' : 'line'}></div>
-        <div className={isOpen ? 'line rotate-bottom' : 'line'}></div>
+        <div className={isOpen ? "line rotate-top" : "line"}></div>
+        <div className={isOpen ? "line hide" : "line"}></div>
+        <div className={isOpen ? "line rotate-bottom" : "line"}></div>
       </div>
     </nav>
   );

@@ -245,7 +245,7 @@ export default function Crossword() {
     <div className="crossword-container">
       <h1 id="crossword-heading">Crossword Puzzle</h1>
 
-      <div className="crossword-grid">
+      <div className="crossword-grid text-black">
         {userGrid.map((row, rowIndex) => (
           <div key={`row-${rowIndex}`} className="grid-row">
             {row.map((cell, colIndex) => (
@@ -291,7 +291,7 @@ export default function Crossword() {
         ))}
       </div>
 
-      <button className="submit-button" onClick={checkAnswers}>
+      <button className="relative cross-submit-button" onClick={checkAnswers}>
         Submit Answers
       </button>
 

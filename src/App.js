@@ -14,6 +14,10 @@ import Crossword from "./Components/Crossword/Crossword";
 import Intro from "./Components/Intro/Intro";
 import AlterPage from "./Components/AlterPage/AlterPage";
 import "./App.css";
+import RulesPage from "./Components/RulesPages/RulesPage";
+import Background from "./Components/Background";
+import MainLayout from "./Components/Layouts/MainLayout";
+import WinnerPage from "./Components/WinnerPages/WinnerPage";
 
 function App() {
   const [riddles, setRiddles] = useState([]);
@@ -38,21 +42,73 @@ function App() {
             <Route
               path="/adventure"
               element={
-                <GameScreen
-                  onRiddleCollected={handleRiddleCollected}
-                  riddlesCollected={riddles.length}
-                  setIsDone={setIsDone}
-                />
+                <MainLayout>
+                  <GameScreen
+                    onRiddleCollected={handleRiddleCollected}
+                    isGameCompleted={isGameCompleted}
+                    setIsEliminated={setIsEliminated}
+                    setIsDone={setIsDone}
+                    setIsLogin={setIsLogin}
+                  />
+                </MainLayout>
               }
             />
             <Route path="/eliminated" element={<EliminationPage />} />
-            <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/crossword" element={<Crossword />} />
+            <Route
+              path="/leaderboard"
+              element={
+                <MainLayout>
+                  <Leaderboard />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/crossword"
+              element={
+                <MainLayout>
+                  <Background />
+                  <Crossword />
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/winner"
+              element={
+                <MainLayout>
+                  <Background />
+                  <WinnerPage/>
+                </MainLayout>
+              }
+            />
+            <Route
+              path="/Rules"
+              element={
+                <MainLayout>
+                  <RulesPage />
+                </MainLayout>
+              }
+            />
             <Route
               path="/riddles"
-              element={isDone ? <Riddles /> : <Navigate to="/alter" />}
+              element={
+                isDone || 1 ? (
+                  <MainLayout>
+                    <Background />
+                    <Riddles />
+                  </MainLayout>
+                ) : (
+                  <Navigate to="/alter" />
+                )
+              }
             />
-            <Route path="/alter" element={<AlterPage />} />
+            <Route
+              path="/alter"
+              element={
+                <MainLayout>
+                  <AlterPage />
+                </MainLayout>
+              }
+            />
           </Routes>
         </div>
       </Router>
