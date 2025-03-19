@@ -35,7 +35,7 @@ const Navbar = () => {
       <ul className={isOpen ? 'nav-links open' : 'nav-links'}>
         <div>
         </div>
-        <li><a href="#about">Hints</a></li>
+        <li><a href="/riddles">Hints</a></li>
         <li><a href="/leaderboard">LeaderBoard</a></li>
       </ul>
 

@@ -10,11 +10,10 @@ import Leaderboard from "./Components/LeaderBoard/LeaderBoard";
 import EliminationPage from "./Components/EliminationPage/EliminationPage";
 import Riddles from "./Components/Riddles/Riddles";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-// import AlterPage from "./Components/AlterPage/AlterPage";
 import Crossword from "./Components/Crossword/Crossword";
 import Intro from "./Components/Intro/Intro";
-import "./App.css";
 import AlterPage from "./Components/AlterPage/AlterPage";
+import "./App.css";
 
 function App() {
   const [riddles, setRiddles] = useState([]);
@@ -38,16 +37,19 @@ function App() {
             <Route
               path="/adventure"
               element={
-                <GameScreen
-                  onRiddleCollected={handleRiddleCollected}
-                  riddlesCollected={riddles.length}
-                  setIsDone={setIsDone}
-                />
+                isDone ? (
+                  <GameScreen
+                    onRiddleCollected={handleRiddleCollected}
+                    riddlesCollected={riddles.length}
+                    setIsDone={setIsDone}
+                  />
+                ) : (
+                  <Navigate to="/alter" />
+                )
               }
             />
             <Route path="/eliminated" element={<EliminationPage />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
-            {/* <Route path="/riddles" element={<Riddles />} /> */}
             <Route path="/crossword" element={<Crossword />} />
             <Route
               path="/riddles"
