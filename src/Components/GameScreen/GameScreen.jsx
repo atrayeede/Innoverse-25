@@ -1,20 +1,20 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import QuestionPanel from "../QuestionPanel/QuestionPanel";
 import TreeVisualization from "../TreeVisualization/TreeVisualization";
 import { questionsData } from "../questions";
 import "./GameScreen.css";
 import Timer from "../Timer/Timer";
+import Navbar from "../Navbar/Navbar";
+import { useNavigate } from "react-router-dom";
 
-function GameScreen({ onRiddleCollected, onElimination, riddlesCollected }) {
+function GameScreen({ onRiddleCollected, onElimination, riddlesCollected, setIsDone }) {
   const [questions, setQuestions] = useState([]);
+  const [score, setScore] = useState(Number(localStorage.getItem("user_score")) || 0);
+  const name = localStorage.getItem("name");
+  const navigate = useNavigate();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answeredQuestions, setAnsweredQuestions] = useState(new Set());
-  const [correctAnswers, setCorrectAnswers] = useState(0);
   const [gameCompleted, setGameCompleted] = useState(false);
-  const [timerStarted, setTimerStarted] = useState(false);
-  const [startTime, setStartTime] = useState(null);
+  const [startTime, setStartTime] = useState(Number(localStorage.getItem("start_time")) || Date.now());
   const [elapsedTime, setElapsedTime] = useState(0);
   const [treeData, setTreeData] = useState({
     id: "root",
@@ -30,68 +30,30 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected }) {
 
   // Shuffle questions on component mount
   useEffect(() => {
-    setQuestions([...questionsData].sort(() => Math.random() - 0.5));
+    const shuffledQuestions = [...questionsData].sort(() => Math.random() - 0.5).slice(0, 20);
+    setQuestions(shuffledQuestions);
   }, []);
 
-  // Get a random unanswered question
-  const getNextQuestion = () => {
-    if (answeredQuestions.size >= questions.length) {
-      return null;
-    }
-    for (let i = 0; i < questions.length; i++) {
-      if (!answeredQuestions.has(i)) {
-        return i;
-      }
-    }
-    return null;
-  };
+  useEffect(() => {
+    localStorage.setItem("user_score", score);
+    localStorage.setItem("start_time", startTime);
+  }, [score, startTime]);
 
-  const handleAnswerSelected = (optionIndex) => {
-    if (!timerStarted) {
-      setTimerStarted(true);
-      setStartTime(Date.now());
-    }
+  const handleAnswerSelected = async (optionIndex) => {
+    if (questions.length === 0) return; // Prevent errors if questions haven't loaded
 
     const currentQuestion = questions[currentQuestionIndex];
     const isCorrect = optionIndex === currentQuestion.correctAnswer;
+    const isFinalQuestion = currentQuestionIndex === 19;
 
-    // Debugging logs
-    console.log(`Selected Option Index: ${optionIndex}`);
-    console.log(`Correct Answer Index: ${currentQuestion.correctAnswer}`);
-    console.log(`Is Correct: ${isCorrect}`);
-
-    // Mark this question as answered
-    setAnsweredQuestions((prev) => new Set([...prev, currentQuestionIndex]));
-
-    // Update correct answers count only if the answer is correct
-    if (isCorrect) {
-      setCorrectAnswers((prev) => {
-        const updatedCorrectAnswers = prev + 1;
-        console.log(
-          `Correct answer! Total correct answers: ${updatedCorrectAnswers}`
-        ); // Debug log
-        // Check if the player has reached 10 correct answers
-        if (updatedCorrectAnswers === 10) {
-          setTimeout(() => {
-            alert("You win!");
-            setGameCompleted(true);
-          }, 300);
-        }
-        return updatedCorrectAnswers;
-      });
-    } else {
-      console.log(`Incorrect answer! Total correct answers: ${correctAnswers}`); // Debug log
-    }
-
-    // Proceed with tree update logic
+    // Tree Traversal Logic
     let currentNode = treeData;
     const pathToUpdate = [...selectedPath];
 
+    // Traverse tree
     for (let i = 1; i < pathToUpdate.length; i++) {
       const childId = pathToUpdate[i];
-      const childIndex = currentNode.children.findIndex(
-        (child) => child.id === childId
-      );
+      const childIndex = currentNode.children.findIndex((child) => child.id === childId);
       if (childIndex !== -1) {
         currentNode = currentNode.children[childIndex];
       }
@@ -103,26 +65,71 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected }) {
     const newPath = [...pathToUpdate, selectedChild.id];
     setSelectedPath(newPath);
 
-    // Create four new nodes for the selected answer
-    const newChildren = [
-      { id: `${selectedChild.id}-1`, name: "A", children: [] },
-      { id: `${selectedChild.id}-2`, name: "B", children: [] },
-      { id: `${selectedChild.id}-3`, name: "C", children: [] },
-      { id: `${selectedChild.id}-4`, name: "D", children: [] },
-    ];
+    // Generate new children if none exist
+    if (selectedChild.children.length === 0) {
+      const newChildren = [
+        { id: `${selectedChild.id}-0`, name: "A", children: [] },
+        { id: `${selectedChild.id}-1`, name: "B", children: [] },
+        { id: `${selectedChild.id}-2`, name: "C", children: [] },
+        { id: `${selectedChild.id}-3`, name: "D", children: [] },
+      ];
 
-    // Add the new children to the selected child's children
-    selectedChild.children.push(...newChildren);
+      const newTreeData = JSON.parse(JSON.stringify(treeData));
+      let nodeToUpdate = newTreeData;
 
-    // Update the tree data
-    setTreeData({ ...treeData });
+      for (let i = 1; i < pathToUpdate.length; i++) {
+        const childId = pathToUpdate[i];
+        const childIndex = nodeToUpdate.children.findIndex((child) => child.id === childId);
+        if (childIndex !== -1) {
+          nodeToUpdate = nodeToUpdate.children[childIndex];
+        }
+      }
 
-    // Move to the next question
-    const nextQuestionIndex = getNextQuestion();
-    if (nextQuestionIndex !== null) {
-      setCurrentQuestionIndex(nextQuestionIndex);
+      const childIndex = nodeToUpdate.children.findIndex((child) => child.id === selectedChild.id);
+      if (childIndex !== -1) {
+        nodeToUpdate.children[childIndex].children = newChildren;
+      }
+
+      setTreeData(newTreeData);
+    }
+
+    if (isCorrect) {
+      setScore(prevScore => {
+        const newScore = prevScore + 1;
+
+        if (newScore === 10) {
+          setIsDone(true);
+          navigate("/riddles");
+          alert("You have collected all the keys. Now you can proceed to the next round.");
+
+          const playerData = {
+            name: name,
+            time: Date.now() - startTime,
+          };
+
+          fetch("http://127.0.0.1:8000/api/leaderboard/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(playerData),
+          })
+            .then((response) => {
+              if (!response.ok) throw new Error("Error submitting score");
+              console.log("Score submitted successfully!");
+            })
+            .catch((error) => console.error("Submission error:", error));
+        }
+
+        return newScore;
+      });
     } else {
+      alert("Wrong answer! Try again.");
+    }
+
+    if (isFinalQuestion) {
       setGameCompleted(true);
+      navigate("/eliminated");
+    } else {
+      setCurrentQuestionIndex((prev) => prev + 1);
     }
   };
 
@@ -130,81 +137,26 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected }) {
     setElapsedTime(time);
   };
 
-  const submitScore = async () => {
-    if (correctAnswers < 10) {
-      alert("You must answer 10 questions to submit!");
-      return;
-    }
-
-    const playerData = {
-      name: "Player", // Replace with actual player name if available
-      time: elapsedTime,
-      questions: [...answeredQuestions],
-    };
-
-    try {
-      const response = await fetch("http://127.0.0.1:8000/api/leaderboard/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(playerData),
-      });
-
-      if (response.ok) {
-        alert("Score submitted successfully!");
-      } else {
-        alert("Error submitting score.");
-      }
-    } catch (error) {
-      console.error("Submission error:", error);
-    }
-  };
-
-  useEffect(() => {
-    if (gameCompleted) {
-      submitScore(); // Submit score when game is completed
-    }
-  }, [gameCompleted]);
-
   return (
     <div className="game-screen">
+      
       <div className="game-header">
-        <h1>
-          <span style={{ color: "red" }}>TreeVerse </span>Round-1
-        </h1>
+        <h1><span style={{ color: "red" }}>TreeVerse</span> Round-1</h1>
         <div className="progress-indicator">
-          <span>
-            Questions: {answeredQuestions.size}/{questions.length}
-          </span>
-          <span>Correct Answers: {correctAnswers}/10</span>
+          <span>Questions: {currentQuestionIndex + 1}/{questions.length}</span>
+          <span>Correct Answers: {score}/10</span>
         </div>
       </div>
-      <Timer
-        gameOver={gameCompleted}
-        startTime={startTime}
-        onTimeUpdate={handleTimeUpdate}
-      />
-
+      <Timer gameOver={gameCompleted} startTime={startTime} onTimeUpdate={handleTimeUpdate} />
       <div className="game-content">
         <div className="question-panel-container">
-          {questions.length > 0 && !gameCompleted && (
+          {questions.length > 0 && (
             <QuestionPanel
-              question={questions[currentQuestionIndex]}
+              question={questions[currentQuestionIndex] || { text: "", options: [] }}
               onAnswerSelected={handleAnswerSelected}
             />
           )}
-          {gameCompleted && (
-            <div className="game-result">
-              <h2>{correctAnswers >= 10 ? "Congratulations!" : "Game Over"}</h2>
-              <p>
-                {correctAnswers >= 10
-                  ? "You've successfully collected 10 correct answers!"
-                  : "You couldn't collect 10 correct answers."}
-              </p>
-              <p>Your final score: {correctAnswers}/10</p>
-            </div>
-          )}
         </div>
-
         <div className="tree-visualization-container">
           <TreeVisualization treeData={treeData} selectedPath={selectedPath} />
         </div>

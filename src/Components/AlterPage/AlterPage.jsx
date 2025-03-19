@@ -10,7 +10,7 @@ function AlterPage() {
         <p>Try again and complete the challenge!</p>
 
         <Link to="/" className="alter-retry-button">
-          Try Again
+          Back to Home
         </Link>
       </div>
     </div>

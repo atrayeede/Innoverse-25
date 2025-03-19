@@ -20,7 +20,7 @@ function App() {
   const [riddles, setRiddles] = useState([]);
   const [isGameCompleted, setIsGameCompleted] = useState(false);
   const [isEliminated, setIsEliminated] = useState(false);
-  const [isDone, setIsDone] = useState(true);
+  const [isDone, setIsDone] = useState(false);
 
   const handleRiddleCollected = (riddle) => {
     setRiddles((prev) => [...prev, riddle]);
