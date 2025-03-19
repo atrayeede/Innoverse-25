@@ -20,6 +20,7 @@ function App() {
   const [isGameCompleted, setIsGameCompleted] = useState(false);
   const [isEliminated, setIsEliminated] = useState(false);
   const [isDone, setIsDone] = useState(false);
+  const [isLogin, setIsLogin] = useState(false)
 
   const handleRiddleCollected = (riddle) => {
     setRiddles((prev) => [...prev, riddle]);
@@ -37,15 +38,11 @@ function App() {
             <Route
               path="/adventure"
               element={
-                isDone ? (
-                  <GameScreen
-                    onRiddleCollected={handleRiddleCollected}
-                    riddlesCollected={riddles.length}
-                    setIsDone={setIsDone}
-                  />
-                ) : (
-                  <Navigate to="/alter" />
-                )
+                <GameScreen
+                  onRiddleCollected={handleRiddleCollected}
+                  riddlesCollected={riddles.length}
+                  setIsDone={setIsDone}
+                />
               }
             />
             <Route path="/eliminated" element={<EliminationPage />} />
