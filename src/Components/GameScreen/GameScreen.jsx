@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import QuestionPanel from "./QuestionPanel";
-import TreeVisualization from "./TreeVisualization";
-import { questionsData } from "./questions";
+import QuestionPanel from "../QuestionPanel/QuestionPanel";
+import TreeVisualization from "../TreeVisualization/TreeVisualization";
+import { questionsData } from "../questions";
 import "./GameScreen.css";
-import Timer from "./Timer";
+import Timer from "../Timer/Timer";
 
 function GameScreen({ onRiddleCollected, onElimination, riddlesCollected }) {
   const [questions, setQuestions] = useState([]);

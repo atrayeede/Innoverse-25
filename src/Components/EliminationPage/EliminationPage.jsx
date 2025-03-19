@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom"
 import "./EliminationPage.css"
+import Navbar from "../Navbar/Navbar"
 
 function EliminationPage() {
   return (
+   <>
+    <Navbar/>
     <div className="elimination-page">
       <div className="elimination-content">
         <h1>You Are Eliminated</h1>
@@ -14,6 +17,7 @@ function EliminationPage() {
         </Link>
       </div>
     </div>
+   </>
   )
 }
 

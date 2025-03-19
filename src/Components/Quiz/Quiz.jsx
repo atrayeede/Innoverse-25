@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import QuestionPanel from "./QuestionPanel";
-import TreeVisualization from "./TreeVisualization";
-import Timer from "./Timer";
-import { generateQuestions } from "./questions";
+import TreeVisualization from "../TreeVisualization/TreeVisualization";
+import Timer from "../Timer/Timer";
+import { generateQuestions } from "../questions";
 import "./Quiz.css"; // Ensure this file has necessary styles
 
 function Quiz() {
