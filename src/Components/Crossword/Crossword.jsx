@@ -1,8 +1,12 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import "./Crossword.css";
-import Navbar from "../Navbar/Navbar";
+import { useNavigate } from "react-router-dom";
 
 export default function Crossword() {
+  const navigate = useNavigate();
+
   // Update the crosswordData object with a larger grid containing 10 words
   const crosswordData = {
     grid: [
@@ -11,11 +15,11 @@ export default function Crossword() {
       ["", "", "", "", "V", "", "", "", "", "", ""],
       ["", "", "N", "O", "A", "P", "I", "", "", "", ""],
       ["", "", "O", "", "S", "", "", "", "", "", ""],
-      ["", "F", "D", "", "C", "O", "D", "E", "", "", ""],
-      ["", "U", "E", "", "R", "", "", "", "", "", ""],
-      ["H", "N", "", "", "I", "", "", "", "", "", ""],
-      ["T", "C", "S", "S", "P", "", "", "", "", "", ""],
-      ["M", "T", "", "", "T", "", "", "", "", "", ""],
+      ["", "A", "D", "", "C", "O", "D", "E", "", "", ""],
+      ["", "L", "E", "", "R", "", "", "", "", "", ""],
+      ["H", "U", "", "", "I", "", "", "", "", "", ""],
+      ["T", "M", "P", "O", "P", "", "", "", "", "", ""],
+      ["M", "N", "", "", "T", "", "", "", "", "", ""],
       ["L", "I", "B", "R", "A", "R", "Y", "", "", "", ""],
     ],
     // Solution grid for checking answers
@@ -25,11 +29,11 @@ export default function Crossword() {
       ["", "", "", "", "V", "", "", "", "", "", ""],
       ["", "", "N", "O", "A", "P", "I", "", "", "", ""],
       ["", "", "O", "", "S", "", "", "", "", "", ""],
-      ["", "F", "D", "", "C", "O", "D", "E", "", "", ""],
-      ["", "U", "E", "", "R", "", "", "", "", "", ""],
-      ["H", "N", "", "", "I", "", "", "", "", "", ""],
-      ["T", "C", "S", "S", "P", "", "", "", "", "", ""],
-      ["M", "T", "", "", "T", "", "", "", "", "", ""],
+      ["", "A", "D", "", "C", "O", "D", "E", "", "", ""],
+      ["", "L", "E", "", "R", "", "", "", "", "", ""],
+      ["H", "U", "", "", "I", "", "", "", "", "", ""],
+      ["T", "M", "P", "O", "P", "", "", "", "", "", ""],
+      ["M", "N", "", "", "T", "", "", "", "", "", ""],
       ["L", "I", "B", "R", "A", "R", "Y", "", "", "", ""],
     ],
     // Add clues for the words (not displayed in this version)
@@ -65,13 +69,13 @@ export default function Crossword() {
       },
       {
         id: 6,
-        word: "FUNCTION",
+        word: "ALUMNI",
         direction: "vertical",
         startRow: 5,
         startCol: 1,
       },
       { id: 7, word: "HTML", direction: "vertical", startRow: 7, startCol: 0 },
-      { id: 8, word: "CSS", direction: "horizontal", startRow: 8, startCol: 2 },
+      { id: 8, word: "POP", direction: "horizontal", startRow: 8, startCol: 2 },
       {
         id: 9,
         word: "SCRIPT",
@@ -233,60 +237,59 @@ export default function Crossword() {
     const key = `${row}-${col}`;
     return cellNumbers[key] || null;
   };
+  const moveAhead = () => {
+    navigate("/winner"); // Change this to your desired route
+  };
 
   // Render the crossword grid
   return (
-   <>
-   
     <div className="crossword-container">
       <h1>Crossword Puzzle</h1>
 
-      <div style={{ overflowX: "auto" }}>
-        <div className="crossword-grid">
-          {userGrid.map((row, rowIndex) => (
-            <div key={`row-${rowIndex}`} className="grid-row">
-              {row.map((cell, colIndex) => (
-                <div
-                  key={`cell-${rowIndex}-${colIndex}`}
-                  className={`grid-cell ${cell === null ? "blocked" : ""} ${
-                    selectedCell.row === rowIndex && selectedCell.col === colIndex
-                      ? "selected"
-                      : ""
-                  }`}
-                  onClick={() => handleCellClick(rowIndex, colIndex)}
-                >
-                  {cell !== null && (
-                    <>
-                      {getCellNumber(rowIndex, colIndex) && (
-                        <span className="cell-number">
-                          {getCellNumber(rowIndex, colIndex)}
-                        </span>
-                      )}
-                      <input
-                        type="text"
-                        maxLength="1"
-                        value={cell}
-                        onChange={(e) =>
-                          handleCellChange(rowIndex, colIndex, e.target.value)
+      <div className="crossword-grid">
+        {userGrid.map((row, rowIndex) => (
+          <div key={`row-${rowIndex}`} className="grid-row">
+            {row.map((cell, colIndex) => (
+              <div
+                key={`cell-${rowIndex}-${colIndex}`}
+                className={`grid-cell ${cell === null ? "blocked" : ""} ${
+                  selectedCell.row === rowIndex && selectedCell.col === colIndex
+                    ? "selected"
+                    : ""
+                }`}
+                onClick={() => handleCellClick(rowIndex, colIndex)}
+              >
+                {cell !== null && (
+                  <>
+                    {getCellNumber(rowIndex, colIndex) && (
+                      <span className="cell-number">
+                        {getCellNumber(rowIndex, colIndex)}
+                      </span>
+                    )}
+                    <input
+                      type="text"
+                      maxLength="1"
+                      value={cell}
+                      onChange={(e) =>
+                        handleCellChange(rowIndex, colIndex, e.target.value)
+                      }
+                      onKeyDown={(e) => handleKeyDown(e, rowIndex, colIndex)}
+                      ref={(input) => {
+                        if (
+                          input &&
+                          selectedCell.row === rowIndex &&
+                          selectedCell.col === colIndex
+                        ) {
+                          input.focus();
                         }
-                        onKeyDown={(e) => handleKeyDown(e, rowIndex, colIndex)}
-                        ref={(input) => {
-                          if (
-                            input &&
-                            selectedCell.row === rowIndex &&
-                            selectedCell.col === colIndex
-                          ) {
-                            input.focus();
-                          }
-                        }}
-                      />
-                    </>
-                  )}
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
+                      }}
+                    />
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
 
       <button className="submit-button" onClick={checkAnswers}>
@@ -294,19 +297,26 @@ export default function Crossword() {
       </button>
 
       {showPopup && (
-        <div class="popup-overlay">
-          <div class="popup">
+        <div className="popup-overlay">
+          <div className="popup">
             <h2>{isCorrect ? "Congratulations!" : "Try Again!"}</h2>
             <p>
-              {isCorrect
-                ? "All your answers are correct!"
-                : "Some of your answers are incorrect. Please try again."}
+              {isCorrect ? (
+                <>
+                  All your answers are correct! <br />
+                  CODE:HAILSAE
+                </>
+              ) : (
+                "Some of your answers are incorrect. Please try again."
+              )}
             </p>
-            <button onClick={closePopup}>Close</button>
+
+            <button onClick={isCorrect ? moveAhead : closePopup}>
+              {isCorrect ? "Move Ahead" : "Close"}
+            </button>
           </div>
         </div>
       )}
     </div>
-   </>
   );
 }
