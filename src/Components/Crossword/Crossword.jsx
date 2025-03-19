@@ -5,8 +5,7 @@ import "./Crossword.css";
 import { useNavigate } from "react-router-dom";
 
 export default function Crossword() {
-  const navigate = useNavigate();
-
+  const navigate=useNavigate();
   // Update the crosswordData object with a larger grid containing 10 words
   const crosswordData = {
     grid: [
@@ -244,7 +243,7 @@ export default function Crossword() {
   // Render the crossword grid
   return (
     <div className="crossword-container">
-      <h1>Crossword Puzzle</h1>
+      <h1 id="crossword-heading">Crossword Puzzle</h1>
 
       <div className="crossword-grid">
         {userGrid.map((row, rowIndex) => (

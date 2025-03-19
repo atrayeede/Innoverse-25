@@ -144,7 +144,6 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected, setIsD
         <h1><span style={{ color: "red" }}>TreeVerse</span> Round-1</h1>
         <div className="progress-indicator">
           <span>Questions: {currentQuestionIndex + 1}/{questions.length}</span>
-          <span>Correct Answers: {score}/10</span>
         </div>
       </div>
       <Timer gameOver={gameCompleted} startTime={startTime} onTimeUpdate={handleTimeUpdate} />

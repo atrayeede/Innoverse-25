@@ -12,7 +12,7 @@ body {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-h1 {
+#crossword-heading {
     text-align: center;
     color: #26c3de;
     margin-bottom: 30px;
@@ -198,24 +198,4 @@ h1 {
     .cell-number {
         font-size: 7px;
     }
-}   .grid-cell {
-        width: 25px;
-        height: 25px;
-    }
-
-    .grid-cell input {
-        font-size: 12px;
-    }
-
-    .cell-number {
-        font-size: 8px;
-    }
-
-    h1 {
-        font-size: 1.5rem;
-    }
-
-    .submit-button {
-        font-size: 12px;
-        padding: 8px;
-    }
+}
