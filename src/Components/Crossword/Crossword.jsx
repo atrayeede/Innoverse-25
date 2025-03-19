@@ -1,7 +1,8 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import "./App.css";
+import Swal from "sweetalert2";
+import "./Crossword.css";
+import Navbar from "../Navbar/Navbar";
 
 export default function Crossword() {
   // Update the crosswordData object with a larger grid containing 10 words
@@ -237,53 +238,57 @@ export default function Crossword() {
 
   // Render the crossword grid
   return (
+   <>
+   
     <div className="crossword-container">
       <h1>Crossword Puzzle</h1>
 
-      <div className="crossword-grid">
-        {userGrid.map((row, rowIndex) => (
-          <div key={`row-${rowIndex}`} className="grid-row">
-            {row.map((cell, colIndex) => (
-              <div
-                key={`cell-${rowIndex}-${colIndex}`}
-                className={`grid-cell ${cell === null ? "blocked" : ""} ${
-                  selectedCell.row === rowIndex && selectedCell.col === colIndex
-                    ? "selected"
-                    : ""
-                }`}
-                onClick={() => handleCellClick(rowIndex, colIndex)}
-              >
-                {cell !== null && (
-                  <>
-                    {getCellNumber(rowIndex, colIndex) && (
-                      <span className="cell-number">
-                        {getCellNumber(rowIndex, colIndex)}
-                      </span>
-                    )}
-                    <input
-                      type="text"
-                      maxLength="1"
-                      value={cell}
-                      onChange={(e) =>
-                        handleCellChange(rowIndex, colIndex, e.target.value)
-                      }
-                      onKeyDown={(e) => handleKeyDown(e, rowIndex, colIndex)}
-                      ref={(input) => {
-                        if (
-                          input &&
-                          selectedCell.row === rowIndex &&
-                          selectedCell.col === colIndex
-                        ) {
-                          input.focus();
+      <div style={{ overflowX: "auto" }}>
+        <div className="crossword-grid">
+          {userGrid.map((row, rowIndex) => (
+            <div key={`row-${rowIndex}`} className="grid-row">
+              {row.map((cell, colIndex) => (
+                <div
+                  key={`cell-${rowIndex}-${colIndex}`}
+                  className={`grid-cell ${cell === null ? "blocked" : ""} ${
+                    selectedCell.row === rowIndex && selectedCell.col === colIndex
+                      ? "selected"
+                      : ""
+                  }`}
+                  onClick={() => handleCellClick(rowIndex, colIndex)}
+                >
+                  {cell !== null && (
+                    <>
+                      {getCellNumber(rowIndex, colIndex) && (
+                        <span className="cell-number">
+                          {getCellNumber(rowIndex, colIndex)}
+                        </span>
+                      )}
+                      <input
+                        type="text"
+                        maxLength="1"
+                        value={cell}
+                        onChange={(e) =>
+                          handleCellChange(rowIndex, colIndex, e.target.value)
                         }
-                      }}
-                    />
-                  </>
-                )}
-              </div>
-            ))}
-          </div>
-        ))}
+                        onKeyDown={(e) => handleKeyDown(e, rowIndex, colIndex)}
+                        ref={(input) => {
+                          if (
+                            input &&
+                            selectedCell.row === rowIndex &&
+                            selectedCell.col === colIndex
+                          ) {
+                            input.focus();
+                          }
+                        }}
+                      />
+                    </>
+                  )}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
 
       <button className="submit-button" onClick={checkAnswers}>
@@ -291,18 +296,24 @@ export default function Crossword() {
       </button>
 
       {showPopup && (
-        <div className="popup-overlay">
-          <div className="popup">
+        <div class="popup-overlay">
+          <div class="popup">
             <h2>{isCorrect ? "Congratulations!" : "Try Again!"}</h2>
             <p>
-              {isCorrect
-                ? "All your answers are correct!"
-                : "Some of your answers are incorrect. Please try again."}
+              {isCorrect ? (
+                <>
+                  All your answers are correct! <br />
+                  CODE:HAILSAE
+                </>
+              ) : (
+                "Some of your answers are incorrect. Please try again."
+              )}
             </p>
             <button onClick={closePopup}>Close</button>
           </div>
         </div>
       )}
     </div>
+   </>
   );
 }
