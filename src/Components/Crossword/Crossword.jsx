@@ -299,11 +299,11 @@ export default function Crossword() {
         <div className="popup-overlay">
           <div className="popup">
             <h2>{isCorrect ? "Congratulations!" : "Try Again!"}</h2>
-            <p className="text-black">
+            <p className="text-black ">
               {isCorrect ? (
                 <>
                   All your answers are correct! <br />
-                  CODE:HAILSAE
+                  <span className="font-semibold text-blue-700">PassCode: {process.env.REACT_APP_PASSCODE}</span>
                 </>
               ) : (
                 "Some of your answers are incorrect. Please try again."

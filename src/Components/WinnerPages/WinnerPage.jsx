@@ -6,52 +6,70 @@ function WinnerPage() {
   const [winner, setWinner] = useState(false);
   const [winnerName, setWinnerName] = useState("");
   const [message, setMessage] = useState("");
-  const backend_url=process.env.REACT_APP_BACKEND;
+  const backend_url = process.env.REACT_APP_BACKEND;
 
-  const correctPasscode = "WINNER";
+  const correctPasscode = process.env.REACT_APP_PASSCODE;
+
+  // console.log(correctPasscode);
 
   // Fetch winner from backend when component mounts
-  useEffect(() => {
-    fetch(`${backend_url}/api/winner/`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.winner) {
-          setWinner(true);
-
-          setWinnerName(data.winner);
-          console.log(data.winner);
-          setMessage(`Winner already declared: ${data.winner}`);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching winner:", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(`${backend_url}/api/winner/`)
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       if (data.length > 0 && data[0].name) {
+  //         setWinner(true);
+  //         setWinnerName(data[0].name);
+  //         setMessage(`Winner already declared: ${data[0].name}`);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching winner:", error);
+  //     });
+  // }, []);
 
   const handleSubmit = () => {
-    // If a winner already exists, prevent another submission
     if (winner) {
       setMessage(`Passcode already claimed by ${winnerName}`);
       return;
     }
+
     if (passcodeInput === correctPasscode) {
-      // Post winner to backend (you can replace "Winner" with a dynamic name if needed)
-      fetch("https://treeversebackend-production.up.railway.app/api/winner", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ winner: "Winner" }),
-      })
+      const winner_name = localStorage.getItem("name");
+
+      // Check if model is empty before posting
+      fetch(`${backend_url}/api/winner/`)
         .then((response) => response.json())
         .then((data) => {
-          setWinner(true);
-          setWinnerName(data.winner);
-          setMessage("Hurray! You won!");
+          if (data.length > 0 && data[0].name) {
+            // alert(`Passcode already claimed by ${data[0].name}`);
+            setWinner(true);
+            setWinnerName(data[0].name);
+            setMessage(`Passcode already claimed by ${data[0].name}`);
+          } else {
+            // Post winner if model is empty
+            fetch(`${backend_url}/api/winner/`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ name: winner_name }),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                setWinner(true);
+                setWinnerName(data.name);
+                setMessage(`Hurray! ${winner_name}, you won!`);
+              })
+              .catch((error) => {
+                console.error("Error saving winner:", error);
+                setMessage("Error saving winner. Try again!");
+              });
+          }
         })
         .catch((error) => {
-          console.error("Error saving winner:", error);
-          setMessage("Error saving winner. Try again!");
+          console.error("Error checking winner status:", error);
+          setMessage("Error checking winner status. Try again!");
         });
     } else {
       setMessage("Incorrect passcode. Try again!");
@@ -69,15 +87,15 @@ function WinnerPage() {
       <div className="img-container bg-black relative z-10">
         <img src="../../../../TreasurePhotopng1.png" alt="TreasurePhoto" />
         {winner && (
-          <div className="winner-overlay">
-            <h1 className="winner-text">{message}</h1>
+          <div className="winner-overlay text-center">
+            <h1 className="winner-text ">{message}</h1>
           </div>
         )}
       </div>
       <div className="row mt-4">
         {message && (
           <div className="message mt-4">
-            <p className="text-white">{message}</p>
+            <p className="text-white ">{message}</p>
           </div>
         )}
         <span>

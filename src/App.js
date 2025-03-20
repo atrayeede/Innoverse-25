@@ -73,7 +73,7 @@ function App() {
             <Route
               path="/crossword"
               element={
-                isDone ? (
+                isDone  ? (
                   <MainLayout>
                     <Background />
                     <Crossword />
@@ -87,7 +87,7 @@ function App() {
             <Route
               path="/winner"
               element={
-                isDone || 1 ? (
+                isDone ? (
                   <MainLayout>
                     <Background />
                     <WinnerPage />
