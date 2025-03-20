@@ -6,11 +6,12 @@ import "./LeaderBoard.css";
 
 const Leaderboard = () => {
   const [players, setPlayers] = useState([]);
+  const backend_url=process.env.REACT_APP_BACKEND;
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/leaderboard/");
+        const response = await fetch(`${backend_url}/api/leaderboard/`);
         if (response.ok) {
           const data = await response.json();
           setPlayers(data.sort((a, b) => a.time - b.time));
@@ -24,7 +25,7 @@ const Leaderboard = () => {
   }, []); 
 
   return (
-    <div className="leaderboard-container mt-10">
+    <div className="leaderboard-container mt-10 relative">
       <h1 className="text-5xl">Leaderboard</h1>
       <div style={{ overflowX: "auto" }}>
         <table className="leaderboard-table">
@@ -34,6 +35,7 @@ const Leaderboard = () => {
               <th>Name</th>
               <th>Time (seconds)</th>
             </tr>
+            
           </thead>
           <tbody>
             {players.map((player, index) => (
@@ -46,6 +48,7 @@ const Leaderboard = () => {
                 </td>
               </tr>
             ))}
+            
           </tbody>
         </table>
       </div>

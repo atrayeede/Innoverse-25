@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './Navbar.css';
 import { useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
-// import axios from 'axios';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,10 +29,9 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <div className="logo">TreeVerse</div>
+      <div className="logo">Innoverse</div>
 
       <ul className={isOpen ? "nav-links open" : "nav-links"}>
-        <div></div>
         <li>
           <a href="/">Home</a>
         </li>

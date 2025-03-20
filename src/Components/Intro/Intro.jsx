@@ -6,6 +6,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 
 const Intro = () => {
   const navigate = useNavigate();
+  const backend_url = process.env.REACT_APP_BACKEND; // Using backend URL from env
   const [isGoogleAuth, setIsGoogleAuth] = useState(false);
 
   const login = useGoogleLogin({
@@ -13,7 +14,7 @@ const Intro = () => {
       try {
         // Fetch user profile data from Google API
         const userInfoResponse = await fetch(
-          "https://www.googleapis.com/oauth2/v3/userinfo",        
+          "https://www.googleapis.com/oauth2/v3/userinfo",
           {
             headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
           }
@@ -24,17 +25,19 @@ const Intro = () => {
 
         // Save email and name to localStorage
         localStorage.setItem("name", userInfo.name);
-        const player_name= userInfo.name;
-        const checkResponse = await fetch("http://127.0.0.1:8000/api/player/");
+        const player_name = userInfo.name;
+        
+        // Use the backend URL from environment variable
+        const checkResponse = await fetch(`${backend_url}/api/player/`);
         if (!checkResponse.ok) throw new Error("Error fetching player data");
-  
+
         const players = await checkResponse.json();
-        const playerExists = players.some(player => player.name === player_name);
+        const playerExists = players.some((player) => player.name === player_name);
         setIsGoogleAuth(true);
         
         if (!playerExists) {
           // If the player does not exist, add them
-          await fetch("http://127.0.0.1:8000/api/player/", {
+          await fetch(`${backend_url}/api/player/`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -48,7 +51,6 @@ const Intro = () => {
         }
   
         navigate("/adventure");
-  
       } catch (error) {
         console.error("Error during login:", error);
       }
@@ -56,7 +58,6 @@ const Intro = () => {
     onError: () => {
       console.log("Google Login Failed");
     },
-    
   });
 
   return (
@@ -77,7 +78,7 @@ const Intro = () => {
 
         {/* Content container */}
         <div className="content-container">
-          <h1 className="main-title">TreeVerse-25</h1>
+          <h1 className="main-title">Innoverse-25</h1>
           <h2 className="sub-title">organized by SAE</h2>
 
           <button className="adventure-button" onClick={login}>

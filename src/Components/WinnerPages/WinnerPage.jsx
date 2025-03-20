@@ -6,12 +6,13 @@ function WinnerPage() {
   const [winner, setWinner] = useState(false);
   const [winnerName, setWinnerName] = useState("");
   const [message, setMessage] = useState("");
+  const backend_url=process.env.REACT_APP_BACKEND;
 
   const correctPasscode = "WINNER";
 
   // Fetch winner from backend when component mounts
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/winner/")
+    fetch(`${backend_url}/api/winner/`)
       .then((response) => response.json())
       .then((data) => {
         if (data.winner) {
@@ -35,7 +36,7 @@ function WinnerPage() {
     }
     if (passcodeInput === correctPasscode) {
       // Post winner to backend (you can replace "Winner" with a dynamic name if needed)
-      fetch("http://127.0.0.1:8000/api/winner", {
+      fetch(`${backend_url}/api/winner/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

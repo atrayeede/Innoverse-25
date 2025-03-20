@@ -61,6 +61,7 @@ function App() {
               path="/leaderboard"
               element={
                 <MainLayout>
+                  <Background/>
                   <Leaderboard />
                 </MainLayout>
               }
@@ -82,7 +83,7 @@ function App() {
             <Route
               path="/winner"
               element={
-                isDone ? (
+                isDone || 1 ? (
                   <MainLayout>
                     <Background />
                     <WinnerPage />
@@ -96,6 +97,7 @@ function App() {
               path="/Rules"
               element={
                 <MainLayout>
+                <Background/>
                   <RulesPage />
                 </MainLayout>
               }
@@ -103,7 +105,7 @@ function App() {
             <Route
               path="/riddles"
               element={
-                isDone  ? (
+                isDone   ? (
                   <MainLayout>
                     <Background />
                     <Riddles />

@@ -10,7 +10,7 @@ const RulesPage = () => {
     }
   return (
     <div className="rulespg mt-16 ">
-      <div className="rules-container">
+      <div className="rules-container relative">
         <h1 className="rules-h1">Rules and Regulation</h1>
 
         <section className="rules-round">

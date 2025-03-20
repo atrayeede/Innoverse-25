@@ -17,6 +17,7 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected, setIsD
   const [gameCompleted, setGameCompleted] = useState(false);
   const [startTime, setStartTime] = useState(Number(localStorage.getItem("start_time")) || Date.now());
   const [elapsedTime, setElapsedTime] = useState(0);
+  const backend_url=process.env.REACT_APP_BACKEND;
   const [treeData, setTreeData] = useState({
     id: "root",
     name: "Start",
@@ -49,7 +50,7 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected, setIsD
           return;
         }
   
-        const response = await fetch("http://127.0.0.1:8000/api/player/");
+        const response = await fetch(`${backend_url}/api/player/`);
         if (!response.ok) {
           throw new Error("Failed to fetch player status");
         }
@@ -142,14 +143,14 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected, setIsD
 
         if (newScore >= 10) {
           alert("You have collected all the keys. Now you can proceed to the next round.");
-          fetch("http://127.0.0.1:8000/api/player/")
+          fetch(`${backend_url}/api/player/`)
         .then((response) => response.json())
         .then((players) => {
           const player = players.find((p) => p.name === player_name);
 
           if (player) {
             // Delete the existing player record
-            fetch(`http://127.0.0.1:8000/api/player/${player.id}/`, 
+            fetch(`${backend_url}/api/player/${player.id}/`, 
             {
               method: "DELETE",
               headers: { "Content-Type": "application/json" },
@@ -160,7 +161,7 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected, setIsD
                 console.log("Previous player entry deleted successfully.");
 
                 // Re-add player with is_complete = true
-                return fetch("http://127.0.0.1:8000/api/player/", {
+                return fetch(`${backend_url}/api/player/`, {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({ name: player_name, is_complete: true }),
@@ -173,7 +174,7 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected, setIsD
               .catch((error) => console.error("Error updating player status:", error));
           } else {
             // If player doesn't exist, add directly
-            fetch("http://127.0.0.1:8000/api/player/", {
+            fetch(`${backend_url}/api/player/`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ name: player_name, is_complete: true }),
@@ -192,7 +193,7 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected, setIsD
             time: Date.now() - startTime,
           };
 
-          fetch("http://127.0.0.1:8000/api/leaderboard/", {
+          fetch(`${backend_url}/api/leaderbard/`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(playerData),

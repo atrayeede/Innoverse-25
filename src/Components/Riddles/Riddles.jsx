@@ -2,25 +2,25 @@ import React from "react";
 // import "./Riddles.css";
 
 const riddles = [
-  { question: "The more you take, the more you leave behind. What am I?" },
-  { question: "I have keys but open no locks. What am I?" },
-  { question: "The person who makes it has no need for it. What is it?" },
-  { question: "I fly without wings. I cry without eyes. What am I?" },
-  { question: "What has to be broken before you can use it?" },
-  { question: "The more you remove from me, the bigger I become. What am I?" },
+  { question: "Two metal fighters, bold and fast,Clashing hard, will one outlast? Sparks may fly, but strength will score, What’s this battle of bots at war? " },
+  { question: "No legs to run, no hands to throw, Yet they chase the ball with a perfect flow. One goal to win, the crowd stands tall, What’s this game of bots and ball ?" },
+  { question: "Through the water, swift and true, A bot must race, cutting through.A maze to solve, no time to waste,   What’s this challenge of speed and grace?" },
+  { question: "A twisting path beneath the waves, A racer glides, the time it craves. No human hands, just code and speed, What’s this race where bots take the lead?" },
+  { question: "Through dirt and dust, we make our mark, With roaring speed, we ignite the spark. Built for the rough, ready to soar,Which team conquers and asks for more?" },
+  { question: "Bouncing high on rugged ground, Through mud and rocks, we tear around. Built to endure, wild and free, What’s this beast of off-road speed?" },
   {
     question:
-      "I am always hungry, I must always be fed. The finger I touch will soon turn red. What am I?",
+      "A tiny bot, so quick and bright, Through walls and turns, it finds the light. Four big mazes, time runs fast, What’s this race where brains outlast?",
   },
   {
     question:
-      "I have cities, but no houses. I have mountains, but no trees. What am I?",
+      "Left or right, which way to go? A thinking bot must always know. Find the path and beat the clock,What’s this game of brain and stock?",
   },
   {
     question:
-      "What can travel around the world while staying in the same spot?",
+      "Engines tuned, the race is near, Gears and bolts, no room for fear. Fix, refine, make it right, What’s this stop before the flight?",
   },
-  { question: "What has one eye but can't see?" },
+  { question: "Where torque meets skill and engines hum, A home for speed, where builders come. Machines are prepped to rule the way,What’s this zone where motors stay?" },
 ];
 
 const Riddles = () => {
@@ -39,8 +39,8 @@ const Riddles = () => {
               alt="Riddle"
               className="w-full  object-center"
             />
-            <div className=" absolute top-1/3  left-0 w-full h-full text-center text-black p-2">
-              <p className="text-xl sm:text-2xl text-black font-bold">
+            <div className=" absolute top-[15%] lg:top-[25%]  left-0 w-full h-full text-center text-black p-2">
+              <p className="text-sm sm:text-xl text-black font-semibold lg:font-bold">
                 {riddle.question}
               </p>
             </div>
