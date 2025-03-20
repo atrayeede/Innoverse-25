@@ -6,7 +6,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 
 const Intro = () => {
   const navigate = useNavigate();
-  const backend_url = process.env.REACT_APP_BACKEND; // Using backend URL from env
+  const backend_url=process.env.REACT_APP_BACKEND;
   const [isGoogleAuth, setIsGoogleAuth] = useState(false);
 
   const login = useGoogleLogin({
@@ -14,7 +14,7 @@ const Intro = () => {
       try {
         // Fetch user profile data from Google API
         const userInfoResponse = await fetch(
-          "https://www.googleapis.com/oauth2/v3/userinfo",
+          `"https://www.googleapis.com/oauth2/v3/userinfo"`,        
           {
             headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
           }
@@ -25,19 +25,17 @@ const Intro = () => {
 
         // Save email and name to localStorage
         localStorage.setItem("name", userInfo.name);
-        const player_name = userInfo.name;
-        
-        // Use the backend URL from environment variable
-        const checkResponse = await fetch(`${backend_url}/api/player/`);
+        const player_name= userInfo.name;
+        const checkResponse = await fetch("https://treeversebackend-production.up.railway.app/api/player/");
         if (!checkResponse.ok) throw new Error("Error fetching player data");
-
+  
         const players = await checkResponse.json();
-        const playerExists = players.some((player) => player.name === player_name);
+        const playerExists = players.some(player => player.name === player_name);
         setIsGoogleAuth(true);
         
         if (!playerExists) {
           // If the player does not exist, add them
-          await fetch(`${backend_url}/api/player/`, {
+          await fetch("https://treeversebackend-production.up.railway.app/api/player/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -51,6 +49,7 @@ const Intro = () => {
         }
   
         navigate("/adventure");
+  
       } catch (error) {
         console.error("Error during login:", error);
       }
@@ -58,6 +57,7 @@ const Intro = () => {
     onError: () => {
       console.log("Google Login Failed");
     },
+    
   });
 
   return (

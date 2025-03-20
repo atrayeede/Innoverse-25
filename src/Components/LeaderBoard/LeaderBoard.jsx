@@ -6,12 +6,11 @@ import "./LeaderBoard.css";
 
 const Leaderboard = () => {
   const [players, setPlayers] = useState([]);
-  const backend_url=process.env.REACT_APP_BACKEND;
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const response = await fetch(`${backend_url}/api/leaderboard/`);
+        const response = await fetch("https://treeversebackend-production.up.railway.app/api/leaderboard/");
         if (response.ok) {
           const data = await response.json();
           setPlayers(data.sort((a, b) => a.time - b.time));
@@ -27,7 +26,7 @@ const Leaderboard = () => {
   return (
     <div className="leaderboard-container mt-10 relative">
       <h1 className="text-5xl">Leaderboard</h1>
-      <div style={{ overflowX: "auto" }}>
+      {/* <div style={{ overflowX: "auto" }}>
         <table className="leaderboard-table">
           <thead>
             <tr>
@@ -51,6 +50,10 @@ const Leaderboard = () => {
             
           </tbody>
         </table>
+      </div> */}
+
+      <div className="font-bold text-3xl text-center ">
+        Leader Board will be updated soon
       </div>
       {/* <Link to="/" className="back-link">Back to Game</Link> */}
     </div>

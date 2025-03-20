@@ -36,7 +36,7 @@ function WinnerPage() {
     }
     if (passcodeInput === correctPasscode) {
       // Post winner to backend (you can replace "Winner" with a dynamic name if needed)
-      fetch(`${backend_url}/api/winner/`, {
+      fetch("https://treeversebackend-production.up.railway.app/api/winner", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
