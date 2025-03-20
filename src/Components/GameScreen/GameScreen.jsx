@@ -197,6 +197,8 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected, setIsD
               }
             })
             .catch((error) => console.error("Error fetching player data:", error));
+
+            
   
           fetch("https://treeversebackend-production.up.railway.app/api/leaderboard/", {
             method: "POST",

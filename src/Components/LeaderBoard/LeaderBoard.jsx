@@ -32,7 +32,7 @@ const Leaderboard = () => {
             <tr>
               <th>Rank</th>
               <th>Name</th>
-              <th>Time (seconds)</th>
+              
             </tr>
             
           </thead>
@@ -41,10 +41,8 @@ const Leaderboard = () => {
               <tr key={player.id}>
                 <td>{index + 1}</td>
                 <td>{player.name}</td>
-                <td>{player.time.toFixed(2)}s</td>
-                <td>
-                 
-                </td>
+               
+                
               </tr>
             ))}
             

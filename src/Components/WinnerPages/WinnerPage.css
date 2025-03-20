@@ -41,11 +41,11 @@ body {
   padding: 40px 30px;
 }
 
-.row:nth-child(2),
+/* .row:nth-child(2),
 .row:nth-child(8),
 .row:nth-child(10) {
-  /* background: #134a46; */
-}
+  background: #134a46;
+} */
 
 .row:nth-child(3),
 .row:nth-child(7) {
