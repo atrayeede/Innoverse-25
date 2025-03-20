@@ -14,14 +14,14 @@ const Intro = () => {
       try {
         // Fetch user profile data from Google API
         const userInfoResponse = await fetch(
-          `"https://www.googleapis.com/oauth2/v3/userinfo"`,        
+          `https://www.googleapis.com/oauth2/v3/userinfo`,        
           {
             headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
           }
         );
 
         const userInfo = await userInfoResponse.json();
-        console.log("Google User Info:", userInfo);
+        // console.log("Google User Info:", userInfo);
 
         // Save email and name to localStorage
         localStorage.setItem("name", userInfo.name);
@@ -43,9 +43,9 @@ const Intro = () => {
               is_complete: false,
             }),
           });
-          console.log("New player added!");
+          // console.log("New player added!");
         } else {
-          console.log("Player already exists, skipping creation.");
+          // console.log("Player already exists, skipping creation.");
         }
   
         navigate("/adventure");
@@ -55,7 +55,7 @@ const Intro = () => {
       }
     },
     onError: () => {
-      console.log("Google Login Failed");
+      // console.log("Google Login Failed");
     },
     
   });

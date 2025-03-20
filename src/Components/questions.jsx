@@ -194,5 +194,10 @@ export const questionsData = [
     text: "I rotate but stay in place, controlling speed with steady grace. What am I?",
     options: ["Flywheel", "Pulley", "Rotor", "Gear"],
     correctAnswer: 1
-  }
+  },
+  {
+    text: "I light up roads with minimal power, guiding travelers hour by hour. What am I?",
+    options: ["LED Street Light", "Solar-Powered Lamp", "Fiber Optic Guideway", "Induction Roadway Light"],
+    correctAnswer: 2
+}
 ]

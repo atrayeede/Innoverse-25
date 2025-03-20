@@ -41,11 +41,15 @@ function App() {
       <Router>
         <div className="app-container">
           <Routes>
-            <Route path="/" element={<Intro />} />
+            <Route path="/" element={
+              
+              <Intro/>
+            } />
             <Route
               path="/adventure"
               element={
                 <MainLayout>
+                  <Background/>
                   <GameScreen
                     onRiddleCollected={handleRiddleCollected}
                     isGameCompleted={isGameCompleted}
@@ -119,6 +123,7 @@ function App() {
               path="/alter"
               element={
                 <MainLayout>
+                  <Background />
                   <AlterPage />
                 </MainLayout>
               }

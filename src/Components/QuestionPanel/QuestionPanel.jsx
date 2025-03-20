@@ -33,7 +33,7 @@ function QuestionPanel({ question, onAnswerSelected }) {
 
   return (
     <div className="question-panel">
-      <h2 className="question-text">{question.text}</h2>
+      <h2 className="question-text  ">Q: {question.text}</h2>
 
       <div className="options-container">
         {question.options.map((option, index) => (

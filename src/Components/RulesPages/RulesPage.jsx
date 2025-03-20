@@ -58,6 +58,11 @@ const RulesPage = () => {
               calculated automatically and displayed in the{" "}
               <span className="rules-highlight">leaderboard</span>.
             </li>
+            <li>
+              Only <span className="rules-highlight">one player account</span> can be created per device to avoid multiple entries form single user.
+              {" "}
+              
+            </li>
           </ul>
         </section>
 
