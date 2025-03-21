@@ -34,7 +34,7 @@ function GameScreen({ onRiddleCollected, onElimination, riddlesCollected, setIsD
 
   // Shuffle questions on component mount
   useEffect(() => {
-    const shuffledQuestions = [...questionsData].sort(() => Math.random() - 0.5).slice(0, 20);
+    const shuffledQuestions = [...questionsData].sort(() => Math.random() - 0.5).slice(0, 40);
     setQuestions(shuffledQuestions);
   }, []);
 
