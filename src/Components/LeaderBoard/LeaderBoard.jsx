@@ -4,13 +4,15 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./LeaderBoard.css"; 
 
+
 const Leaderboard = () => {
   const [players, setPlayers] = useState([]);
+  const backend_url=process.env.REACT_APP_BACKEND;
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const response = await fetch("https://treeversebackend-production.up.railway.app/api/leaderboard/");
+        const response = await fetch(`${backend_url}/api/leaderboard/`);
         if (response.ok) {
           const data = await response.json();
           setPlayers(data.sort((a, b) => a.time - b.time));
