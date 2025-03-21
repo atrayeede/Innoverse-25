@@ -245,7 +245,7 @@ export default function Crossword() {
     <div className="crossword-container">
       <h1 id="crossword-heading">Crossword Puzzle</h1>
 
-      <div className="crossword-grid text-black">
+      <div className="crossword-grid text-black ">
         {userGrid.map((row, rowIndex) => (
           <div key={`row-${rowIndex}`} className="grid-row">
             {row.map((cell, colIndex) => (

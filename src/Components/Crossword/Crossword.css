@@ -10,6 +10,11 @@ body {
     padding: 20px;
     margin-top: 5rem;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
 }
 
 #crossword-heading {
