@@ -18,6 +18,7 @@ import RulesPage from "./Components/RulesPages/RulesPage";
 import Background from "./Components/Background";
 import MainLayout from "./Components/Layouts/MainLayout";
 import WinnerPage from "./Components/WinnerPages/WinnerPage";
+import LoginPage from './Components/LoginPage'; 
 
 function App() {
   const [riddles, setRiddles] = useState([]);
